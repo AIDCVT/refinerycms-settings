@@ -70,20 +70,7 @@ module Refinery
         scoping = (value[:scoping] if value.is_a?(Hash) and value.has_key?(:scoping))
         setting = where(name: name.to_s, scoping: scoping).first_or_initialize
 
-        # you could also pass in {:value => 'something', :scoping => 'somewhere'}
-        unless value.is_a?(Hash) and value.has_key?(:value)
-          setting.value = value
-        else
-          # set the value last, so that the other attributes can transform it if required.
-          setting.form_value_type = value[:form_value_type] || 'text_area' if setting.respond_to?(:form_value_type)
-          setting.scoping = value[:scoping] if value.has_key?(:scoping)
-          setting.destroyable = value[:destroyable] if value.has_key?(:destroyable)
-          setting.value = value[:value]
-        end
-
-        # Save because we're in a setter method.
-        setting.save
-
+        setting.update(value)
         # Return the value
         setting.value
       end
