@@ -36,21 +36,7 @@ module Refinery
 
       # find_or_set offers a convenient way to
       def find_or_set(name, the_value, options={})
-        # Merge default options with supplied options.
-        options = {
-          scoping: nil,
-          restricted: false,
-          form_value_type: 'text_area'
-        }.merge(options)
-
-        # try to find the setting first
-        value = get(name, scoping: options[:scoping])
-
-        # if the setting's value is nil, store a new one using the existing functionality.
-        value = set(name, options.merge(value: the_value)) if value.nil?
-
-        # Return what we found.
-        value
+        find_by(name: name)&.value || the_value
       end
 
       alias :get_or_set :find_or_set
