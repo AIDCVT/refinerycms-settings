@@ -18,7 +18,7 @@ module Refinery
 
     validates :name, :presence => true
 
-    serialize :value # stores into YAML format
+    serialize :value, coder: YAML # stores into YAML format
 
     before_save do |setting|
       setting.restricted = false if setting.restricted.nil?
